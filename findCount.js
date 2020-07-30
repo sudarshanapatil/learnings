@@ -50,7 +50,7 @@ let getCount = async (data) => {
 
                         }
                     },
-                    { $match: { month: 7, productId: "Product-1" } },
+                    { $match: { month, productId } },
                     ]
                 );
 
