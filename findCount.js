@@ -3,7 +3,6 @@ var mongoDB = 'mongodb://127.0.0.1/test';
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 var Schema = mongoose.Schema;
-// create a schema
 var userSchema = new Schema({
     userId: String,
     viewDate: Date,
@@ -12,123 +11,98 @@ var userSchema = new Schema({
 var User = mongoose.model('User', userSchema);
 
 let getCount = async (data) => {
-    let { filter, productId, month, startDate, endDate } = data
+    let { filter, startDate, endDate } = data
     try {
-        switch (filter) {
-            //finds data for current day
-            case "daily":
+        if (filter == "daily" || filter == "weekly" || filter == "custom") {
+            if (filter === 'daily') {
+                startDate = new Date();
+                endDate = new Date();
+                startDate.setHours(0, 0, 0, 0);
+                endDate.setDate(endDate.getDate() + 1);
+                endDate.setHours(23, 59, 59, 999);
+            }
+            if (filter === 'weekly') {
+                let day=new Date().getDay()
+                endDate = new Date();
+                startDate = new Date();
+                startDate.setDate(startDate.getDate() - new Date().getDay());
+            }
+            console.log(startDate, endDate)
+            let totalCount = await User.aggregate([
                 {
-                    var start = new Date();
-                    start.setHours(0, 0, 0, 0);
-                    var end = new Date();
-                    end.setHours(23, 59, 59, 999);
-                    let data = await Promise.all([User.find({ viewDate: { $gte: start, $lte: end }, productId }),
-                    User.find({ viewDate: { $gte: start, $lte: end }, productId }).distinct("userId")])
-                    let res = { count: data[0].length, uniqueCount: data[1].length }
-                    console.log(res);
-                    break;
+                    $match: {
+                        viewDate: { $gte: startDate, $lte: endDate }
+                    }
+                },
+                {
+                    $group: {
+                        "_id": '$productId',
+                        totalCount: { $sum: 1 }
+                    }
                 }
-            case "weekly": {
-                //get data for current week
-                let today = new Date();
-                var oneWeekAgo = new Date();
-                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-                let data = await Promise.all([User.find({ viewDate: { $gte: oneWeekAgo, $lte: today }, productId }),
-                User.find({ viewDate: { $gte: oneWeekAgo, $lte: today }, productId }).distinct("userId")])
-                let res = { count: data[0].length, uniqueCount: data[1].length }
-                console.log(res);
-                break;
-            }
-            case "monthly": {
-                let userCount = User.aggregate(
-                    [{
-                        $project: {
-                            month:
-                                { $month: '$viewDate' },
-                            productId: '$productId',
-                            userId: '$userId'
-
-                        }
-                    },
-                    { $match: { month, productId } },
-                    ]
-                );
-
-                let uniqueCount = User.aggregate(
-                    [{
-                        $project: {
-                            month:
-                                { $month: '$viewDate' },
-                            productId: '$productId',
-                            userId: '$userId'
-
-                        }
-                    },
-                    { $match: { month: month, productId } },
-                    {
-                        $group: {
-                            _id: "$userId"
-                        }
-                    }]
-                );
-                let data = await Promise.all([userCount, uniqueCount])
-                let res = {
-                    count: data[0].length,
-                    uniqueCount: data[1].length
+            ])
+            console.log(totalCount);
+        }
+        if (filter === "monthly") {
+            let month = new Date().getMonth() + 1;
+            let userCount = await User.aggregate(
+                [{
+                    $project: {
+                        month:{ $month: '$viewDate' },
+                        productId: '$productId',
+                        userId: '$userId'
+                    }
+                },
+                { $match: { month } },
+                {
+                    $group: {
+                        "_id": { 'prod': '$productId', 'user': '$userId' },
+                        totaldocs: { $sum: 1 }
+                    }
                 }
-                console.log(res)
-                break
-            }
-
-            case "custome": {
-                let data = await Promise.all([User.find({ viewDate: { $gte: startDate, $lte: endDate }, productId }),
-                User.find({ viewDate: { $gte: startDate, $lte: endDate }, productId }).distinct('userId')])
-                let res = { count: data[0].length, uniqueCount: data[1].length }
-                console.log(res);
-                break;
-            }
+                ]
+            );
+            console.log(userCount)
         }
     } catch (error) {
         console.log(error, "Error in quering mongo")
     }
 }
 
-//for daily
-getCount({ filter: "daily", productId: 'Product-1' })
-//for weekly
-getCount({ filter: "weekly", productId: 'Product-1' })
-//for monthly
-getCount({ filter: "monthly", productId: 'Product-1', month: 7 })
-//for custome filter
-getCount({ filter: "custome", productId: 'Product-2', startDate: '2015-07-30', endDate: '2020-04-30' })
 
-//To imsert data
+getCount({ filter: "daily", startDate: 'Product-1', endDate: '' })
+
+
+//To insert data
 let insertData = (userId, viewDate, productId) => {
     let rawData = [
         {
-            userId: 10,
+            userId: 12,
             productId: 'Product-1',
             viewDate: new Date()
         },
         {
-            userId: 10,
+            userId: 12,
             productId: 'Product-2',
             viewDate: new Date()
         },
         {
-            userId: 11,
-            productId: 'Product-1',
-            viewDate: '2020-04-23T06:12:00.166Z'
+            userId: 12,
+            productId: 'Product-3',
+            viewDate: new Date()
         }
     ]
-    User.insertMany()
+    User.insertMany(rawData)
 
 }
+// insertData()
 
 //get all data
 async function findAll() {
     const all = await User.find();
     console.log(all)
 }
+
+// findAll()
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
