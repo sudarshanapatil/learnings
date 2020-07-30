@@ -11,7 +11,8 @@ var userSchema = new Schema({
 var User = mongoose.model('User', userSchema);
 
 let getCount = async (data) => {
-    let { filter, startDate, endDate } = data
+    let { filter, startDate, endDate } = data;
+    let queryArr = [];
     try {
         if (filter === 'daily') {
             startDate = new Date();
@@ -30,7 +31,6 @@ let getCount = async (data) => {
             if (startDate > endDate)
                 throw new Error("Invalid date")
         }
-        let queryArr = [];
         if (filter === "monthly") {
             let month = new Date().getMonth() + 1;
             queryArr.push({
@@ -50,11 +50,11 @@ let getCount = async (data) => {
         }
         queryArr.push({
             $group: {
-                "_id": { "productId": '$productId', userId: "$userId" },
+                "_id": { "productId": '$productId', userId: "$userId" },   //query to find total count
                 count: { $sum: 1 }
             }
         }, {
-            $group: {
+            $group: {                                                      //query to find distinct count
                 "_id": {
                     "productId": "$_id.productId"
                 },
@@ -76,6 +76,6 @@ let getCount = async (data) => {
         console.log(error, "Error in quering mongo")
     }
 }
-getCount({ filter: "monthly", startDate: '20-02-2020', endDate: '09-12-2020' })
+getCount({ filter: "monthly", startDate: '20-02-2020', endDate: '09-12-2020' })  //filter:["daily","weekly","monthly","custom"] startDate/endDate:dd-mm-yyyy
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
