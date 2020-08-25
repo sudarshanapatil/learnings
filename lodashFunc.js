@@ -155,3 +155,28 @@ const findIndex = function (arr, func) {
 }
 
 // console.log(findIndex(arrObj, ['active', false]));
+
+const join = function (arr, separator) {
+  let str = '';
+  for (let i of arr) {
+    str += `${i}${separator}`
+  }
+  return str;
+}
+
+console.log(join(arr1, ' '));
+
+const reverse = function (arr) {
+  let ans = [];
+  for (let i = arr.length - 1; i >= 0; i--) {
+    ans.push(arr[i]);
+  }
+  return ans;
+}
+
+// console.log(reverse(arr1));
+const take = function (arr, n = 1) {
+  return arr.slice(0,n);
+}
+
+console.log(arr1,take(arr1,10));
