@@ -10,7 +10,11 @@ const chunk = function (n) {
 
 let arr = [2, 3, 7, 0, false, [3], [[3, 8]], 3];
 let chunkSize = 3;
-// console.log(arr.chunk(chunkSize));
+let arrObj = [{ name: "sudu", active: true },
+{ name: "rani", active: false },
+{ name: "ranipatil", active: false }];
+let arr1 = [3, 4, 3, 8, 's'];
+let arr2 = [5, 6, 's'];
 
 const compact = function () {
   let res = [];
@@ -20,8 +24,6 @@ const compact = function () {
   return res;
 };
 
-// console.log(arr.compact());
-
 const concat = function () {
   let res = [];
   for (let i of [...arguments]) {
@@ -29,10 +31,6 @@ const concat = function () {
   }
   return res;
 };
-
-let arr1 = [3, 4, 3, 8, 's']
-let arr2 = [5, 6, 's']
-// console.log(concat(arr1, arr2, 6));
 
 const difference = function () {
   let obj = arguments[0].reduce((res, ele) => {
@@ -64,19 +62,15 @@ const difference = function () {
   return res;
 };
 
-// console.log(difference(arr1, arr2));
-
 const drop = function (arr, n = 1) {
   arr.splice(0, n);
   return arr;
 }
-// console.log(drop(arr1, 0));
 
 const dropRight = function (arr, n = 1) {
   arr.reverse().splice(0, n);
   return arr.reverse();
 }
-// console.log(dropRight(arr1, 2));
 
 const fill = function (arr, element, start = 0, end = arr.length) {
   let count = start;
@@ -86,12 +80,6 @@ const fill = function (arr, element, start = 0, end = arr.length) {
   }
   return arr;
 }
-
-// console.log(fill(arr1, 2));
-
-let arrObj = [{ name: "sudu", active: true },
-{ name: "rani", active: false },
-{ name: "ranipatil", active: false }];
 
 const find = function (arr, func) {
   for (let i of arr) {
@@ -122,10 +110,6 @@ const find = function (arr, func) {
   }
 }
 
-// console.log(find(arrObj, (ele) => {
-//   return ele.name === 'sudu'
-// }));
-
 const findIndex = function (arr, func) {
   for (let i = 0; i < arr.length; i++) {
     if (Array.isArray(func)) {
@@ -154,8 +138,6 @@ const findIndex = function (arr, func) {
   }
 }
 
-// console.log(findIndex(arrObj, ['active', false]));
-
 const join = function (arr, separator) {
   let str = '';
   for (let i of arr) {
@@ -163,8 +145,6 @@ const join = function (arr, separator) {
   }
   return str;
 }
-
-console.log(join(arr1, ' '));
 
 const reverse = function (arr) {
   let ans = [];
@@ -174,9 +154,32 @@ const reverse = function (arr) {
   return ans;
 }
 
-// console.log(reverse(arr1));
 const take = function (arr, n = 1) {
-  return arr.slice(0,n);
+  return arr.slice(0, n);
 }
 
-console.log(arr1,take(arr1,10));
+const without = function (arr, values) {
+  console.log(values)
+  arr = new Set(arr);
+  for (let i = 0; i < values.length; i++) {
+    if (arr.has(values[i])) {
+      arr.delete(values[i]);
+    }
+  }
+  let res = [];
+  for (let item of arr.values()) {
+    res.push(item);
+  }
+  return res;
+}
+// console.log(without([1, 2, 2, 2, 4, 5], 2,3,4))
+
+const uniq = function (arr) {
+  arr = new Set(arr);
+  let res = [];
+  for (let item of arr.keys()) {
+    res.push(item);
+  }
+  return res;
+}
+console.log(uniq([1, 2, 2, 2, 4, 5]))
