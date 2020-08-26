@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "lodash",
   "version": "1.0.0",
   "main": "index.js",
@@ -7,5 +8,21 @@
     "start":"node class.js",
     "sudu":"node class.js"
 
+=======
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "start": "lerna run start"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lerna run test --since master",
+      "pre-push": "lerna run test --since master"
+    }
+>>>>>>> 027dde8b668a05858b53d1dc7517c8a055209610
   }
 }
