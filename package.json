@@ -10,7 +10,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lerna run test --since master"
+      "pre-commit": "lerna run test --since master",
+      "pre-push": "lerna run test --since master"
     }
   }
 }
