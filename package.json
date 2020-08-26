@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "start": "lerna run start"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lerna run test --since Head --stream"
+    }
+  }
+}
