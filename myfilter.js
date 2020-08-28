@@ -1,16 +1,14 @@
-let a = [4, 6, 7, 90,0, 34, 56]
-let myFilter = (array, func) => {
-  let filterArr = []
-  for (let i in array) {
-    let data=func(array[i])
-    if(data)
-    filterArr.push(array[i])
+const a = [4, 6, 7, 90, 0, 34, 56];
+const myFilter = (array, func) => {
+  const filterArr = [];
+  for (const i in array) {
+    const data = func(array[i]);
+    if (data) filterArr.push(array[i]);
   }
-  return filterArr
-}
-let finalArr=myFilter(a,(data)=>{
-   if(data>50)  
-  return data
-})
+  return filterArr;
+};
+const finalArr = myFilter(a, (data) => {
+  if (data > 50) return data;
+});
 
-console.log(finalArr)
+console.log(finalArr);

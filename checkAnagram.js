@@ -1,18 +1,17 @@
-let arr = ['cat', 'act', 'seen', 'nees', 'jhjh', 'jjh'];
-let obj = {};
-let res = [];
+const arr = ['cat', 'act', 'seen', 'nees', 'jhjh', 'jjh'];
+const obj = {};
+const res = [];
 
 for (let i = 0; i < arr.length; i++) {
-  let sortedWord = arr[i].split('').sort().join('');
+  const sortedWord = arr[i].split('').sort().join('');
   if (!obj[sortedWord]) {
     obj[sortedWord] = [arr[i]];
-  }
-  else {
+  } else {
     obj[sortedWord].push(arr[i]);
   }
 }
 
-for (let i in obj) {
+for (const i in obj) {
   if (obj[i].length < 2) {
     delete obj[i];
   }

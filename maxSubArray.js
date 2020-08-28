@@ -1,5 +1,6 @@
-let arr = [2, -3, -10];
-let max = 0, maxSoFar = 0, maxStart = 0, maxEnd = 0, maxSoFarStart = 0, maxSoFarEnd = 0;
+const arr = [2, -3, -10];
+let max = 0; let maxSoFar = 0; let maxStart = 0; let maxEnd = 0; let maxSoFarStart = 0; let
+  maxSoFarEnd = 0;
 for (let i = 0; i < arr.length; i++) {
   if (arr[i] + maxSoFar > 0) {
     maxSoFar += arr[i];
@@ -14,5 +15,5 @@ for (let i = 0; i < arr.length; i++) {
     maxSoFarStart = i + 1;
   }
 }
-console.log("max : ", max, "start_index : ", maxStart, "end_index : ",
+console.log('max : ', max, 'start_index : ', maxStart, 'end_index : ',
   maxEnd);
