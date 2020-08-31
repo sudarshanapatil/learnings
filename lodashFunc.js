@@ -1,20 +1,18 @@
-const chunk = function (n) {
+const chunk = function (arr, chunkSize = 1) {
   const res = [];
   let count = 0;
-  while (count < this.length) {
-    res.push(this.slice(count, n + count));
-    count += n;
+  if (!Array.isArray(arr)) {
+    arr = arr.split('');
   }
+
+  while (count < arr.length && chunkSize !== 0 && typeof chunkSize === 'number') {
+    res.push(arr.slice(count, chunkSize + count));
+    count += chunkSize;
+  }
+
   return res;
 };
 
-const arr = [2, 3, 7, 0, false, [3], [[3, 8]], 3];
-const chunkSize = 3;
-const arrObj = [{ name: 'sudu', active: true },
-{ name: 'rani', active: false },
-{ name: 'ranipatil', active: false }];
-const arr1 = [3, 4, 3, 8, 's'];
-const arr2 = [5, 6, 's'];
 
 const compact = function () {
   let res = [];
@@ -168,11 +166,8 @@ const flatten = function (arr) {
   const res = [];
   for (const i of arr) {
     if (Array.isArray(i)) {
-      for (let j of i) {
-        res.push(j);
-      }
-    }
-    else {
+      res.push(...i);
+    } else {
       res.push(i);
     }
   }
@@ -183,46 +178,54 @@ const flattenDeep = function (arr) {
   const res = [];
   for (const i of arr) {
     if (Array.isArray(i)) {
-      let ans = flattenDeep(i);
+      const ans = flattenDeep(i);
       res.push(...ans);
-    }
-    else {
+    } else {
       res.push(i);
     }
   }
   return res;
 };
 
-
-const flattenDeepDepth = function (arr, depth = 2) {
+const flattenDepth = function (arr, depth) {
   const res = [];
-  var count = 1;
   for (const i of arr) {
     if (Array.isArray(i)) {
-      while (count <= depth) {
-        for (let j of i) {
-          if (Array.isArray(j)){
-            
-          }
-        }
-        count++;
+      if (depth > 1) {
+        const ans = flattenDeepDepth(i, --depth);
+        res.push(...ans);
+      } else {
+        for (const j of i) res.push(j);
       }
-      // for (let j of i) {
-      //   res.push(j);
-      // }
-    }
-    else {
+    } else {
       res.push(i);
     }
   }
   return res;
 };
-console.log(flattenDeepDepth([1, 2,
-  [2,
-    [3, 4,
-      [8]
-    ]
-  ]
-]));
 
+const zipWith = function () {
+  let func = arguments[arguments.length - 1];
+  let allArrays = Object.values(arguments);
+  if (typeof func !== 'function') {
+    func = (a, b) => {
+      return [a, b];
+    }
+    allArrays = allArrays.splice(0, allArrays.length);
+  }
+  else {
+    allArrays = allArrays.splice(0, allArrays.length - 1);
+  }
+  let res = [];
+  for (let i = 0; i < allArrays[0].length; i++) {
+    let args = allArrays.map(e => e[i]);
+    res.push(func(...args));
+  }
+  return res;
+}
 
+module.exports = {
+  chunk,
+  compact,
+  zipWith
+}
