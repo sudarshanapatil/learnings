@@ -56,26 +56,52 @@ describe("test zipWith function", () => {
 		let arr1 = [2, 3];
 		let arr2 = [4];
 		let func = (a, b) => { return a * b };
-		myOutput = lodash.zipWith(arr1, arr2,func);
+		myOutput = lodash.zipWith(arr1, arr2, func);
 		output = _.zipWith(arr1, arr2, func);
 		expect(myOutput).toEqual(output);
 	})
 
 	test('If one array arguments are not passed to the function', () => {
-		let arr1 = [2, 3,4];
+		let arr1 = [2, 3, 4];
 		let arr2 = [4];
 		let arr3 = [4];
 		let func = (a, b) => { return a * b };
-		myOutput = lodash.zipWith(arr1, arr2,func);
+		myOutput = lodash.zipWith(arr1, arr2, func);
 		output = _.zipWith(arr1, arr2, func);
 		expect(myOutput).toEqual(output);
 	})
 
 	test('If function is not passed', () => {
-		let arr1 = [2, 3,4];
+		let arr1 = [2, 3, 4];
 		let arr2 = [4];
-	    myOutput = lodash.zipWith(arr1, arr2);
+		myOutput = lodash.zipWith(arr1, arr2);
 		output = _.zipWith(arr1, arr2);
+		expect(myOutput).toEqual(output);
+	})
+})
+
+describe('test zip function', () => {
+	test('if all arrays of the same size', () => {
+		let arr1 = [2, 3, 4];
+		let arr2 = [4, 3, 4];
+		myOutput = lodash.zip(arr1, arr2);
+		output = _.zip(arr1, arr2);
+		expect(myOutput).toEqual(output);
+	})
+
+	test('if all arrays are not of the same size', () => {
+		let arr1 = [2, 3, 4];
+		let arr2 = [4, 4];
+		myOutput = lodash.zip(arr1, arr2);
+		output = _.zip(arr1, arr2);
+		expect(myOutput).toEqual(output);
+	})
+
+	test('if all arrays are not of the same size', () => {
+		let arr1 = [2, 3, 4];
+		let arr2 = [4, 4];
+		myOutput = lodash.zip(arr1, arr2, []);
+		output = _.zip(arr1, arr2, []);
 		expect(myOutput).toEqual(output);
 	})
 })

@@ -204,6 +204,25 @@ const flattenDepth = function (arr, depth) {
   return res;
 };
 
+const zip = function () {
+  let allArrays = Object.values(arguments);
+  let totalArr = allArrays.length;
+  let arrLength = allArrays[0].length;
+  let count = 0;
+  let finalArr = [];
+  while (count < arrLength) {
+    let arr = [];
+    for (let i = 0; i < totalArr; i++) {
+      let ele = allArrays[i];
+      arr.push(ele[count]);
+    }
+    count++;
+    finalArr.push(arr);
+  }
+  return finalArr;
+  
+}
+
 const zipWith = function () {
   let func = arguments[arguments.length - 1];
   let allArrays = Object.values(arguments);
@@ -227,5 +246,6 @@ const zipWith = function () {
 module.exports = {
   chunk,
   compact,
-  zipWith
+  zipWith,
+  zip
 }
