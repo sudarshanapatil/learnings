@@ -1,21 +1,18 @@
-const data = [0, 3, 2, 6, 5, 8, 1, 9, 7, 10];
-const otherArr = [...data];
-const sum = 9;
-let check;
+let data = [2, 8, 5,-2,2];
+let sum = 10;
+let hash = {};
 
 function findIndexWithSum(data, sum) {
-  for (const i of data) {
-    if (i < sum) {
-      check = sum - i;
-    } else if (i === sum) {
-      check = sum;
+  for (let i = 0; i < data.length; i++) {
+    if (hash[data[i]]) {
+      firstIndex = hash[data[i]];
+      lastIndex = i;
+      console.log("Index", firstIndex, lastIndex);
     }
-    if (data.includes(check)) {
-      const removeIndex = data.indexOf(check);
-      console.log(otherArr.indexOf(i), otherArr.indexOf(check));
-      data.splice(removeIndex, 1);
-    }
+    balance = sum - data[i];
+    hash[balance] = i.toString();
   }
 }
 
-findIndexWithSum(data, sum);
+findIndexWithSum(data, sum)
+console.log("hash", hash)

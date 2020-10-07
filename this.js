@@ -36,7 +36,8 @@ const call3 = {
   
 let newCall = call3.says;
   
-newCall();
+newCall.bind(call3)();
+newCall() 
 
 function Person(fn, ln) {
 	this.first_name = fn;
